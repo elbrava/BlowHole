@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+{% block content %}
+<form action="" method="post">
+    <div class="comparision">
+        <div class="outer_select">
+
+            <div class="selection">
+                <input class="choosen" value="yes" type="text">
+                <button class="inline">
+                    <div class="inline_inner">
+                        <div class="inline_innest">shit</div>
+                        <div class="inline_innest_num">2</div>
+                    </div>
+                </button>
+            </div>
+            <input class="submit" type="submit" value="SUBMIT">
+        </div>
+        <!--
+        javascript color of inline buttton
+    form resubmission
+    input
+-->
+
+</form>
+<style>
+    body {
+        margin: 0;
+        background-color: deeppink;
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+
+    }
+
+    form {
+        width: 100%;
+    }
+
+    .submit {
+        width: 30%;
+        margin: 7% auto;
+        font-family: sponge;
+    }
+
+    .submit {
+        margin-top: 3%;
+        width: 100%;
+        height: 40%;
+        color: deeppink;
+        font-size: 300%;
+        background-color: rebeccapurple;
+        border: deeppink solid 4px;
+    }
+
+    .submit:hover,
+    .submit:focus {
+        background-color: deeppink;
+        border: rebeccapurple solid 4px;
+        color: rebeccapurple;
+    }
+
+    .submit::placeholder {
+        opacity: 0.7;
+        text-align: center;
+
+
+    }
+
+    .comparision {
+        width: 96%;
+        margin: 4% auto;
+        height: auto;
+        color: powderblue;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+
+
+    }
+
+
+    input {
+        background-color: deeppink;
+        color: powderblue;
+        text-align: center;
+        outline: none;
+        border: 0;
+        border: 3px solid deeppink;
+        font-size: 160%;
+        height: 10%;
+
+    }
+
+    input:hover,
+    input:focus {
+
+        border: 3px solid powderblue;
+    }
+
+    .outer_select {
+        display: flexbox;
+        width: auto;
+    }
+
+    .selection {
+        display: inline-flex;
+        flex-direction: column;
+        width: auto;
+        color: powderblue;
+        font-size: 120%;
+
+
+    }
+
+    .inline {
+        display: flexbox;
+        background-color: red;
+        border: 3px solid powderblue;
+        color: powderblue;
+        font-size: 160%;
+        opacity: 0;
+    }
+
+    .inline_inner {
+        display: flex;
+    }
+
+    .inline_innest,
+    .inline_innest_num {
+        display: flexbox;
+    }
+
+    .choosen {
+        background: red;
+    }
+
+    .inline_innest_num {
+        border-left: 3px solid powderblue;
+        text-align: center;
+    }
+
+
+    .selection:hover>.inline {
+        opacity: 1;
+    }
+
+    .selection:focus>.inline {
+        opacity: 1;
+    }
+</style>
+<script>
+    
+    window.onload = function () {
+        window.setInterval(frame, 2)
+        //window.setTimeout(done,7)
+
+        function done () {
+
+            var btn = document.querySelector(".inline > div > div").innerHTML
+            var btn.
+            document.querySelector(".choosen").value=btn
+            console.log(btn)
+
+            
+        }
+    }
+    function frame() {
+        document.querySelector(".choosen").style.width = parseInt(document.querySelector(".choosen").value.length) * 30
+
+
+        document.querySelector(".comparision").style.width = parseInt(document.querySelector(".choosen").value.length) * 30
+
+
+    }
+</script>
+{% endblock content %}

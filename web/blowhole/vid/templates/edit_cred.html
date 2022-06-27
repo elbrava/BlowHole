@@ -1,0 +1,258 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    body {
+    margin: 0;
+    background-color: #f2eaed;
+    
+    }
+
+    .soma {
+        display: flexbox;
+        font-size: 510%;
+        font-family: sponge;
+    }
+
+    .bot {
+        display: flexbox;
+        font-size: 200%;
+        font-family: sponge;
+        align-self: baseline;
+    }
+
+    .logo {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        color: #1ecfd6;
+        background-color: #000d29;
+
+    }
+</style>
+<style>
+    .submit {
+        width: 30%;
+        margin: 7% auto;
+        font-family: sponge;
+    }
+
+    body {
+        display: flex;
+        margin: 0;
+        justify-content: center;
+        align-items: center;
+        background-color: #f2eaed;
+        flex-wrap: wrap;
+    }
+
+    .form_container {
+        width: 96%;
+        margin: auto 0;
+    }
+
+    input {
+        margin-top: 4%;
+        margin-left: 1%;
+        width: 100%;
+        height: 16%;
+        color: #1ecfd6;
+        font-size: 300%;
+        background-color: #02231c;
+        border: #1ecfd6 solid 4px;
+    }
+
+    input[type="time"i]{ 
+    width: auto;
+     }
+    input:hover,
+    input:focus {
+        background-color: #1ecfd6;
+        border: #000d29 solid 4px;
+        color: #000d29;
+    }
+
+    input::placeholder {
+        opacity: 0.7;
+        text-align: center;
+        color: rosybrown;
+
+
+    }
+    #time{
+        height: 62px;
+    }
+
+    .credentials {
+        color: #5a4d4c;
+        font-size: 490%;
+        font-family: sponge;
+    }
+
+    .capital {
+        text-transform: uppercase;
+    }
+</style>
+<style>
+    #topic{
+        width: 30%;
+    }
+    #flex1 {
+        display: flexbox;
+    }
+
+    #flex2 {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+    }
+
+    #inner_flex1 {
+        display: flexbox;
+        height: 10%;
+        margin: 1%;
+        font-size: 300%;
+    }
+
+    input[type="time"i]
+  {
+        width: auto;
+        
+    }
+
+    #add {
+        margin-top: 4%;
+        font-size: 140%;
+        background-color: maroon;
+        height: 60px;
+        color: #1ecfd6;
+        border: #1ecfd6 solid 4px;
+     
+    }
+    select {
+        margin-top: 4%;
+        margin-right: 1%;
+        margin-left: 1%;
+        display: flex;
+        height: 62px;  
+        color: #1ecfd6;
+        background-color: #02231c;
+        border: #1ecfd6 solid 4px;
+        font-size: 45px ;
+        text-align: center;
+        cursor: default
+  
+}
+</style>
+
+
+<div class="form_container">
+    <form action="" method="post" id="form1">
+        {% csrf_token %}
+        <div class="credentials">EDIT YOUR {{unit}} UNIT</div>
+        <div id="flex1">
+            <div id="flex2">
+                <select aria-label="type" name="type" id="type">
+                    <option value="Assignment">Assignment</option>
+                    <option value="Cat">Cat</option>
+                    <option value="Lesson">Lesson</option>
+                </select>
+                <input placeholder="topic" type="text" id="topic">
+                <input placeholder="time" type="time" name="time" id="time">
+                <select name="days of the week" id="day" id="inner_flex1">
+                    <option value="Monday">Monday</option>
+                    <option value="Tuesday">Tuesday</option>
+                    <option value="Wednesday">Wednesday</option>
+                    <option value="Thursday">Thursday</option>
+                    <option value="Friday">Friday</option>
+                    <option value="Saturday">Sartuday</option>
+                    <option value="Sunday">Sunday</option>
+                </select>
+                <button id="add">ADD</button>
+            </div>
+    </form>
+
+</div>
+
+<form id="form2" action="edit_cred" method="post" autocomplete="off">
+    {% csrf_token %}
+    <input type="hidden" id="unit" name="unit" value="{{unit}}">
+    <input class="submit" type="submit" value="SAVE">
+</form>
+
+</div>
+<script>
+
+    var today = new Date();
+    var time = document.getElementById("time")
+    time.value = today.getHours() + ":" + today.getMinutes()
+    var save;
+    var form1 = document.getElementById("form1")
+    var form2 = document.getElementById("form2")
+    var add = document.getElementById("add")
+    var topic = document.getElementById("topic")
+    var type = document.getElementById("type")
+    var day = document.getElementById("day")
+    console.log(type);
+    var count = 1
+    save=document.querySelector(".submit")
+    save.style.visibility="hidden";
+    save.onclick=function (){
+
+        save.style.visibilty="collapse";
+    }
+    add.onclick = function (ev) {
+        save.style.visibility="visible";
+        ev.preventDefault()
+        if (topic.value == "required" || topic.value == "") {
+            topic.value = "required"
+        }
+
+        else {
+            form2.removeChild(save);
+            var x = document.createElement("input");
+            var t = type.value + topic.value + day.value + time.value
+            if (t.includes("|")) {
+                alert(" '|' can not be used in any of the values")
+            }
+            else {
+                x.value = type.value + "|" + topic.value + " |" + day.value + "| " + time.value
+                var y = document.createElement("div")
+                y.innerHTML = "Delete above"
+                y.id = "e" + count
+                x.id = "e" + count
+                x.name = "details"
+                y.style.background = "maroon"
+            
+            }
+            y.onclick = function () {
+                save.style.visibility="hidden"
+                var c = form2.children
+                for (i = 0; i < c.length; i++) {
+                    console.log(c[i])
+                    if (c[i].id === y.id) {
+                        form2.removeChild(c[i])
+                        form2.removeChild(y)
+                    }
+
+                }
+
+            }
+
+            form2.appendChild(x);
+            form2.appendChild(y)
+            form2.appendChild(save)
+            topic.value = ""
+            day.value = "Monday"
+            time.value = today.getHours() + ":" + today.getMinutes();
+            count++;
+        }
+
+    }
+
+
+
+</script>
+
+
+{% endblock content %}

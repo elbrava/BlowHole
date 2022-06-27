@@ -1,0 +1,279 @@
+{%extends "base.html" %} {% block content %}
+<style>
+  input {
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    outline: none;
+    box-sizing: content-box;
+    border: 0;
+  }
+
+  .note {
+    font-family: gh;
+    font-size: 105%;
+    color: rosybrown;
+    display: flexbox;
+  }
+
+  ._flex_selection {
+    display: flex;
+    flex-direction: row;
+  }
+
+  ._inner_flex {
+    display: flex;
+    visibility: visible;
+  }
+  .inner_h_flex {
+    display: flex;
+    flex-direction: row;
+  }
+  .input {
+    display: flex;
+    flex-direction: row;
+  }
+  .note_val {
+    display: flexbox;
+  }
+
+  .call {
+    display: flexbox;
+
+    margin: 2%;
+  }
+  .num {
+    color: red;
+    background-color: blue;
+    display: flexbox;
+  }
+  .notes {
+    display: flex;
+    flex-direction: row;
+    flex-flow: column;
+  }
+</style>
+
+<audio   class="audio_record" controls preload  autoplay src="{{url}}">AUDIO</audio>
+<br />
+<hr />
+<input type="hidden" value="{{pk}}" class="pk">
+<h1>Notes</h1>
+<hr />
+<form
+  class="form"
+  id="form_record1"
+  enctype="multipart/form-data"
+  action="/note_data"
+  method="get"
+>
+  {% csrf_token %}
+</form>
+<form
+  class="form"
+  id="form_record2"
+  enctype="multipart/form-data"
+  action="/record"
+  method="post"
+>
+  {% csrf_token %}
+</form>
+<div class="notes" id="notes"></div>
+<br />
+<hr />
+<h1>images</h1>
+<hr />
+<div class="pics" id="pics">
+  {% for pic in other_pics %}
+  <img src="{{pic}}" alt="{{pic}}" />
+
+  {% endfor %}
+</div>
+<br>
+<hr>
+<h1>Videos</h1>
+<hr>
+<div class="videos" id="videos">
+  {% for vid in videos %}
+  <iframe frameborder="0" scrolling="no" marginheight="0" marginwidth="0" width="445" height="250" type="text/html"
+    src="https://www.youtube.com/embed/{{vid}}?autoplay=1&fs=1&iv_load_policy=1&showinfo=1&rel=1&cc_load_policy=1&start=0&end=0&origin=http://youtubeembedcode.com">
+    <div>
+      <small><a href="https://youtubeembedcode.com/pl/">youtubeembedcode pl</a></small>
+    </div>
+    <div>
+      <small><a
+          href="https://onlinepokiesrealmoneynodeposit.com/">https://onlinepokiesrealmoneynodeposit.com/</a></small>
+    </div>
+    <div>
+      <small><a href="https://youtubeembedcode.com/en">youtubeembedcode en</a></small>
+    </div>
+    <div>
+      <small><a href="https://casinoutansvensklicensvolt.se/">https://casinoutansvensklicensvolt.se/</a></small>
+    </div>
+  </iframe>
+  {% endfor %}
+</div><br>
+<hr>
+<h1>Articles</h1>
+<hr>
+<div class="articles">
+  {% for link,title in articles%}
+  {{articles.index}}
+
+  <a href="{{link}}">{{title}}</a><br>
+  {% endfor %}
+</div>
+<button id="save">SAVE</button>
+<script
+  src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"
+  type="text/javascript"
+></script>
+<script>
+
+  //classmates=Array(classmates)
+  //console.log({{classmates}})
+
+  function frame() {
+    //console.log(document.querySelectorAll(".note").length)
+    for (var i = 0; i <document.querySelectorAll(".note").length; i++) {
+      console.log(document.querySelectorAll(".note")[i])
+      document.querySelectorAll(".note")[i].style.width =
+        parseInt(document.querySelectorAll(".note")[i].value.length) * 14;
+      document.querySelectorAll(".note")[i].style.padding = 0;
+      document.querySelectorAll(".note")[i].style.visibility = "visible";
+    }
+
+    //document.querySelector(".comparosion").style.width = parseInt(document.querySelector(".choosen").value.length) * 30
+  }
+</script>
+<script>
+  var notes;
+  var classmates;
+  var form = document.getElementById("form_record1");
+  download();
+  function download() {
+    console.log("yay");
+    fd = new FormData(form);
+    pk=document.querySelector(".pk").value
+    console.log(pk)
+    fd.append("pk",pk)
+    console.log(fd.values().next());
+    $.ajax({
+      type: "get",
+      url: "/user/note_data/"+pk,
+      contentType: false,
+      processData: false,
+      mimeType: "multipart/form-data",
+
+      data: fd,
+      success: function (res) {
+        var j = JSON.parse(res);
+        notes = j["notes"];
+        classmates = j["classmates"];
+        classmates = new Array(classmates);
+        counter = j["counter"].length;
+        notes = new Array(notes);
+        input_create(classmates, notes, counter);
+        window.setInterval(frame, 1000)
+      },
+      error: function (err) {
+        console.log("error" + err);
+      },
+    });
+  }
+  function input_create(classsmates, notes, counter) {
+    console.log(counter);
+    for (var i = 0; i < counter - 1; i++) {
+      notes_val = document.createElement("div");
+      notes_val.classList.add("notes_val");
+
+      flex_select = document.createElement("div");
+      flex_select.classList.add("_flex_selection");
+
+      input_note = document.createElement("input");
+      input_note.classList.add("note");
+      input_note.id = i;
+      input_note.value = notes[0][i];
+
+      flex_select.appendChild(input_note);
+      notes_dom = document.querySelector(".notes");
+      notes_val.appendChild(flex_select);
+      for (var c = 0; c < classmates[0][i].length; c++) {
+        div1 = document.createElement("div");
+        div1.classList.add("_inner_flex");
+
+        div2 = document.createElement("div");
+        div2.classList.add("inner_h_flex");
+
+        div3 = document.createElement("div");
+        div3.classList.add("num");
+        button2 = document.createElement("button");
+        button2.classList.add("call");
+
+        button2.innerHTML = classmates[0][i][c][0];
+        button2.onclick = function (e) {
+          e.preventDefault();
+          console.log(e);
+          console.log(
+            e.srcElement.parentElement.parentElement.parentElement.querySelector(
+              "input"
+            )
+          );
+          q =
+            e.srcElement.parentElement.parentElement.parentElement.querySelector(
+              "input"
+            );
+          q.value = e.srcElement.innerHTML;
+        };
+        div3.innerHTML = classmates[0][i][c][1];
+        div2.appendChild(button2);
+        div2.appendChild(div3);
+        div1.appendChild(div2);
+        flex_select.appendChild(div1);
+      }
+      notes_dom.appendChild(notes_val);
+    }
+
+    //window.setInterval(frame, 2,[counter])
+  }
+</script>
+<script>
+  var fd;
+  var save=document.getElementById("save")
+  var form2 = document.getElementById("form_record2")
+  save.addEventListener(
+    "click", function () {
+      fd = new FormData(form)
+      fd.append("document","<html>"+document.querySelector("html").innerHTML+"</html>")
+      var text=document.querySelectorAll(".note")
+      sr=""
+      for (var i=0;i<text.length;i++){
+        sr+=text[i].value+" "
+        console.log(sr)
+      }
+
+      console.log(text)
+      fd.append("transcribes",sr)
+      var pk=document.querySelector(".pk").value
+      $.ajax({
+        type: "post",
+        url: "/user/do/"+pk,
+    
+        contentType: false,
+        processData: false,
+        mimeType: "multipart/form-data",
+        data: fd,
+        success: function (res) {
+          alert("Success" + res)
+        },
+        error: function (err) {
+          console.log("error" + err)
+        }
+
+
+      })
+
+    }
+  )
+</script>
+{% endblock content %}

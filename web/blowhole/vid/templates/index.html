@@ -1,0 +1,109 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blowhole</title>
+    <!--fonts-->
+    <!-- font awesome -->
+    <link rel="stylesheet" href={% static "./css/all.min.css"  %}  >
+    <link rel="stylesheet" href= {% static  "./css/fontawesome.min.css"%}>
+    <!-- styles -->
+    <link rel="stylesheet" href={% static "styles.css" %}/>
+    <style>
+        .nav-header {
+            border-radius: 50%;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div class="nav-center">
+            <!-- nav header -->
+            <div class="nav-header">
+                <img src="/image" class="logo" alt="logo" />
+
+            </div>
+            <!-- links -->
+            <ul class="links">
+                <li>
+                    <a href="#home" class="scroll-link">home</a>
+                </li>
+                <li>
+                    <a href="#about" class="scroll-link">about</a>
+                </li>
+                <li>
+                    <a href="#contacts" class="scroll-link">contacts</a>
+                </li>
+                <li>
+                    <a href="signin.html">Sign in</a>
+                </li>
+            </ul>
+            <!-- social media -->
+            <ul class="social-icons">
+                <li>
+                    <a href="https://www.facebook.com" target="_blank">
+                        <i class="fa-brands fa-facebook"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.twitter.com" target="_blank">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.linkedin.com" target="_blank">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="banner">
+        <div class="container">
+            <h1>Home</h1>
+            <p>
+                Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                Alias quam ex quisquam perspiciatis. At, ducimus nihil iure maiores sunt
+                recusandae ipsam ad, eius, sint doloremque suscipit eaque! Odio, reiciendis officiis.
+            </p>
+            <!-- about -->
+            <section id="about" class="section">
+                <div class="title">
+                    <h2>About <span>us</span></h2>
+                </div>
+            </section>
+            <!-- services -->
+            <section id="contacts" class="section">
+                <div class="title">
+                    <h2>Get in <span>touch</span></h2>
+                </div>
+            </section>
+
+
+            <!-- footer -->
+            <footer class="section">
+                <p>
+                    copyright &copy; blowhole company
+                    <span id="date"></span>. all rights reserved
+                </p>
+            </footer>
+            <a class="scroll-link top-link" href="#home">
+                <i class="fas fa-arrow-up"></i>
+            </a>
+            <!-- javascript -->
+            <script src="script.js"></script>
+            <script>
+                function new(){
+                    $.ajax(
+                        method.get
+                    )
+
+                }
+            </script>
+</body>
+
+</html>

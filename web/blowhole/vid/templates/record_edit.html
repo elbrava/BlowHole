@@ -1,0 +1,244 @@
+{% extends 'base.html' %} {% block content %}
+<style>
+  * {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  #container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: black;
+    width: 100%;
+    height: 100%;
+  }
+  #canvas1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: black;
+    width: 100%;
+    height: 100%;
+  }
+  #audio1 {
+    width: 50%;
+    margin: 50 auto;
+    display: block;
+  }
+  #roller1,
+  #roller2 {
+    font-family: sponge;
+    font-size: 120%;
+    color: crimson;
+    background-color: crimson;
+    width: 27;
+    height: 27;
+    border-radius: 50%;
+    display: block;
+    border: 3px solid blue;
+    position: absolute;
+    visibility: collapse;
+  }
+  #time1,
+  #time2 {
+    width: 100;
+    height: 100;
+    background-color: transparent;
+    padding-top: 27;
+    text-align: center;
+  }
+</style>
+<div id="container1">
+  <canvas id="canvas1"></canvas>
+
+  <div id="roller1"><div id="time1"></div></div>
+  <div id="roller2"><div id="time2"></div></div>
+  <form action="" id="form1">
+    <input id="initial" placeholder="initial" type="text" />
+    <input id="final" placeholder="final" type="text" />
+    <input id="file" placeholder="file" type="text" />
+    <input type="submit" value="SAVE" id="submit1" />
+  </form>
+</div>
+
+<script type="text/javascript">
+  var audio = new Audio();
+  audio.controls = true;
+  audio.id = "audio1";
+
+  audio.src = "/data/record.wav";
+  document.body.appendChild(audio);
+  var playing = false;
+  const container = document.getElementById("container1");
+  const canvas = document.getElementById("canvas1");
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  var ctx = canvas.getContext("2d");
+  let source;
+  let analyser;
+  container.addEventListener("click", function () {
+    audio.load();
+    audio.play();
+  });
+
+  audio.addEventListener("playing", function () {
+    var audioCtx = new AudioContext();
+
+    source = audioCtx.createMediaElementSource(audio);
+    analyser = audioCtx.createAnalyser();
+    source.connect(analyser);
+
+    analyser.connect(audioCtx.destination);
+    analyser.fftSize = 64;
+    const bufferLen = analyser.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLen);
+
+    var barWidth = canvas.width / bufferLen;
+    let Barheight;
+
+    var x;
+
+    var x1;
+
+    var x2;
+    var y1;
+    var y2;
+    var x3;
+    var y3;
+    var y4;
+    var x4;
+    var size = 200;
+    var i = 0;
+
+    function get_initial_final() {
+      size = 200;
+
+      x1 = 400;
+      y1 = 400;
+      //|
+      x2 = 400;
+      y2 = 400 + size;
+      //__
+      x3 = 400 + size;
+      y3 = 400 + size;
+      //|
+      x4 = 400 + size;
+      y4 = 400;
+
+      x1 =
+        x1 * Math.cos((i / 180) * Math.PI) + y1 * Math.sin((i / 180) * Math.PI);
+      y1 =
+        -x1 * Math.sin((i / 180) * Math.PI) +
+        y1 * Math.cos((i / 180) * Math.PI);
+
+      x2 =
+        x2 * Math.cos((i / 180) * Math.PI) + y2 * Math.sin((i / 180) * Math.PI);
+      y2 =
+        -x2 * Math.sin((i / 180) * Math.PI) +
+        y2 * Math.cos((i / 180) * Math.PI);
+
+      x3 =
+        x3 * Math.cos((i / 180) * Math.PI) + y3 * Math.sin((i / 180) * Math.PI);
+      y3 =
+        -x3 * Math.sin((i / 180) * Math.PI) +
+        y3 * Math.cos((i / 180) * Math.PI);
+
+      x4 =
+        x4 * Math.cos((i / 180) * Math.PI) + y4 * Math.sin((i / 180) * Math.PI);
+      y4 =
+        -x4 * Math.sin((i / 180) * Math.PI) +
+        y4 * Math.cos((i / 180) * Math.PI);
+      ctx.strokeStyle = "red";
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.lineTo(x3, y3);
+      ctx.lineTo(x4, y4);
+      ctx.lineTo(x1, y1);
+
+      ctx.strokeStyle = "crimson";
+      ctx.stroke();
+      i += 1;
+    }
+    var one = false;
+    var two = false;
+    var norm = true;
+    var roller1 = document.getElementById("roller1");
+    roller1.addEventListener("click", function () {
+      one = true;
+      two = false;
+      norm = false;
+      console.log("clicked11");
+    });
+    var roller2 = document.getElementById("roller2");
+    roller2.addEventListener("click", function () {
+      one = false;
+      two = true;
+      norm = false;
+      console.log("clicked22");
+    });
+
+    function animate() {
+      let x = 0;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      analyser.getByteFrequencyData(dataArray);
+      for (let i = 0; i < bufferLen; i++) {
+        barHeight = dataArray[i];
+        ctx.fillStyle = "crimson";
+        ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+        x += barWidth;
+      }
+      get_initial_final();
+      mid();
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+    var w = 10;
+
+    function mid() {
+      ctx.fillStyle = "white";
+      ctx.fillRect(10, canvas.height / 2, canvas.width - w * 2, w);
+      var roller1 = document.getElementById("roller1");
+      var roller2 = document.getElementById("roller2");
+      roller1.style.visibility = "visible";
+      roller2.style.visibility = "visible";
+      roller1.style.top = canvas.height / 2 - 10;
+      roller2.style.top = canvas.height / 2 - 10;
+      console.log(norm);
+      if (norm) {
+        console.log("me");
+        roller1.children[0].innerHTML = "INITIAL <br>";
+        roller2.children[0].innerHTML =
+          "FINAL <br>" +
+          Math.floor(audio.currentTime / 60) +
+          ":" +
+          Math.round(audio.currentTime % 60);
+        roller2.style.right =
+          canvas.width - (audio.currentTime / audio.duration) * canvas.width;
+      } else {
+        if (one) {
+          roller1.style.right =
+            canvas.width - (audio.currentTime / audio.duration) * canvas.width;
+          roller1.children[0].innerHTML =
+            "INITIAL <br>" +
+            Math.floor(audio.currentTime / 60) +
+            ":" +
+            Math.round(audio.currentTime % 60);
+        }
+        if (two) {
+          roller2.children[0].innerHTML =
+            "FINAL <br>" +
+            Math.floor(audio.currentTime / 60) +
+            ":" +
+            Math.round(audio.currentTime % 60);
+          roller2.style.right =
+            canvas.width - (audio.currentTime / audio.duration) * canvas.width;
+        }
+      }
+    }
+  });
+</script>
+<script type="text/javascript"></script>
+{% endblock content %}
